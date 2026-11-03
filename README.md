@@ -85,7 +85,7 @@
 
 ## 开发
 
-接手开发请先读 [HANDOFF.md](HANDOFF.md)，完整设计文档见 [singbox_gui_docs](singbox_gui_docs/README.md)。
+完整设计文档见 [singbox_gui_docs](singbox_gui_docs/README.md)。
 
 ```powershell
 git submodule update --init third_party/sing-box third_party/mygo

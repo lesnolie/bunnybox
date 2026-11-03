@@ -5,3 +5,6 @@
 *.exe
 *.test
 *.syso
+
+# Local handoff notes for the maintainer, not published
+HANDOFF.md

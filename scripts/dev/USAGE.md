@@ -30,4 +30,4 @@ Uninstall 委派官方 `service uninstall`；服务确认消失后，仅逐个�
 
 运行 `./scripts/dev/test-preflight.ps1` 可执行语法解析及无系统写入的前置检查测试：覆盖路径穿越、网络盘、卷根、备用数据流、目录重叠、第三方服务、无主布局键和不安全服务参数。
 
-2026-11-02 本机只读检查发现，`C:\` 对 `BUILTIN\Users` 有生效的 FullControl ACE，标记为 NoPropagateInherit，而不是 InheritOnly。官方 `security_windows.go` 的 `validateInstallationAncestors` 会检查卷根本身，这条权限包含 DELETE / WRITE_DAC / WRITE_OWNER / DELETE_CHILD，因此安全安装在调用服务命令前即被阻止。父代理同时确认 D 盘根对 Authenticated Users 的 Modify 包含 DELETE，亦不能安全替代。本脚本的 `-Plan` / `-WhatIf` 应在此明确失败；管理员提升不能解决这种路径权限问题。本轮没有修改整盘 ACL、启用 unsafe 参数或执行真实安装/修复/卸载；真实系统变更与回滚尚未验证。
+官方核心会拒绝安装在卷根目录允许普通用户写入的盘上（见 `security_windows.go` 的 `validateInstallation`）。测试安装前先确认目标卷根目录的权限，或像 `test-volume.ps1` 那样使用专用的 VHDX 卷。
