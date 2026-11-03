@@ -176,10 +176,10 @@ func (s *Shell) cardManagement(c *ui.Context, t *ui.Theme) {
 				})
 			}
 			ui.Row(c).Gap(8).Justify(ui.End).Children(func() {
-				if ui.Button(c, s.text("重置", "Reset")).TextColor(t.Danger).Clicked() {
+				if button(c, s.text("重置", "Reset")).TextColor(t.Danger).Clicked() {
 					s.changeSettings(c, func() { s.cards = newCardConfig(nil, nil) })
 				}
-				if ui.Button(c, s.text("完成", "Done")).Clicked() {
+				if button(c, s.text("完成", "Done")).Clicked() {
 					s.cardsOpen = false
 				}
 			})

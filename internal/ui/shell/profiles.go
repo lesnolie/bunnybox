@@ -121,7 +121,7 @@ func (s *Shell) dashboardProfile(c *ui.Context, t *ui.Theme) {
 		if selected != nil {
 			label = selected.Name
 		}
-		ui.Button(c, "").Label(s.text("选择配置", "Select profile")).Height(40).Padding(10, 14).Justify(ui.Start).Background(t.Background).Border(0, ui.Transparent).Radius(10).Children(func() {
+		button(c, "").Label(s.text("选择配置", "Select profile")).Height(40).Padding(10, 14).Justify(ui.Start).Background(t.Background).Border(0, ui.Transparent).Radius(10).Children(func() {
 			ui.Text(c, label).FontSize(16).FontWeight(600).Grow(1)
 			ui.Icon(c, icons["chevrons"]).FontSize(15).TextColor(t.TextMuted)
 		}).PopoverMenuButton(func(menu *ui.Menu) {
@@ -176,7 +176,7 @@ func (s *Shell) profileSection(c *ui.Context, t *ui.Theme) {
 		}
 		for _, p := range s.profiles {
 			ui.Row(c).Key(p.ID).Gap(10).AlignItems(ui.Center).Padding(6).Children(func() {
-				if hoverFill(ui.Button(c, "").Label(p.Name).Grow(1).Height(44), ui.Transparent).Border(0, ui.Transparent).Children(func() {
+				if hoverFill(button(c, "").Label(p.Name).Grow(1).Height(44), ui.Transparent).Border(0, ui.Transparent).Children(func() {
 					ui.Column(c).Grow(1).Gap(2).Children(func() {
 						ui.Text(c, p.Name).FontSize(14)
 						info := s.profileType(p)
@@ -193,7 +193,7 @@ func (s *Shell) profileSection(c *ui.Context, t *ui.Theme) {
 				}).Disabled(s.busy).Clicked() && !p.Selected {
 					s.selectProfile(c, p.ID)
 				}
-				hoverFill(ui.Button(c, "").Label(s.text("配置操作 ", "Profile actions ")+p.Name).Height(28).Width(28), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(16) }).PopoverMenuButton(func(m *ui.Menu) { s.profileMenu(c, m, p) })
+				hoverFill(button(c, "").Label(s.text("配置操作 ", "Profile actions ")+p.Name).Height(28).Width(28), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(16) }).PopoverMenuButton(func(m *ui.Menu) { s.profileMenu(c, m, p) })
 			})
 		}
 	})
@@ -377,7 +377,7 @@ func (s *Shell) editor(c *ui.Context, t *ui.Theme) {
 					if readOnly {
 						label = s.text("查看内容", "View Content")
 					}
-					if ui.Button(c, label).Disabled(s.busy).Clicked() {
+					if button(c, label).Disabled(s.busy).Clicked() {
 						s.readContent(c, f.id, f.name, readOnly)
 					}
 				}
@@ -386,7 +386,7 @@ func (s *Shell) editor(c *ui.Context, t *ui.Theme) {
 				if f.action == "content" && f.readOnly {
 					closeLabel = s.text("关闭", "Close")
 				}
-				if ui.Button(c, closeLabel).Disabled(s.busy).Clicked() {
+				if button(c, closeLabel).Disabled(s.busy).Clicked() {
 					s.dialog = false
 				}
 				if f.action == "content" && f.readOnly {
@@ -430,7 +430,7 @@ func (s *Shell) newProfileForm(c *ui.Context, t *ui.Theme) {
 				if f.fileName != "" {
 					label = f.fileName
 				}
-				if ui.Button(c, label).Label(s.text("选择文件", "Choose file")).Disabled(s.busy || s.config.Callbacks.OpenFile == nil).Clicked() {
+				if button(c, label).Label(s.text("选择文件", "Choose file")).Disabled(s.busy || s.config.Callbacks.OpenFile == nil).Clicked() {
 					s.chooseJSON(c)
 				}
 			})

@@ -39,20 +39,32 @@ var icons = map[string]*ui.SVG{
 }
 
 func iconButton(c *ui.Context, icon *ui.SVG, label string) ui.Element {
-	return hoverFill(ui.Button(c, "").Label(label).Width(32).Height(32).Padding(7).Radius(7).Border(0, ui.Transparent), ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(18) })
+	return hoverFill(button(c, "").Label(label).Width(32).Height(32).Padding(7).Radius(7).Border(0, ui.Transparent), ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(18) })
 }
 
 // hoverFill gives a button drawn on fill the feedback its own style would:
 // a light tint while the pointer is over it and a deeper one while pressed.
 // A colored fill, as a selected item's, stays as it is.
 func hoverFill(e ui.Element, fill ui.Color) ui.Element {
+	pressed := e.Pressed()
 	if fill == ui.Transparent {
 		switch {
-		case e.Pressed():
+		case pressed:
 			fill = ui.Hex("#808080").Alpha(.24)
 		case e.Hovered():
 			fill = ui.Hex("#808080").Alpha(.14)
 		}
 	}
 	return e.Background(fill)
+}
+
+// button is ui.Button that shrinks a little while pressed and springs back,
+// as Apple's and Windows 11's buttons do.
+func button(c *ui.Context, label string) ui.Element {
+	e := ui.Button(c, label)
+	pose := ui.Pose{}
+	if e.Pressed() {
+		pose.Scale = .96
+	}
+	return e.AnimatePose(pose, ui.Snappy)
 }

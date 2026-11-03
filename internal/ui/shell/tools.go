@@ -131,7 +131,7 @@ func (s *Shell) toolsPage(c *ui.Context, t *ui.Theme) {
 }
 
 func (s *Shell) toolLink(c *ui.Context, t *ui.Theme, page, icon, label string) {
-	if hoverFill(ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start), ui.Transparent).Border(0, ui.Transparent).Children(func() {
+	if hoverFill(button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start), ui.Transparent).Border(0, ui.Transparent).Children(func() {
 		ui.Row(c).Grow(1).Gap(10).AlignItems(ui.Center).Children(func() {
 			ui.Icon(c, icons[icon]).FontSize(18).TextColor(t.Accent)
 			ui.Text(c, label).FontSize(14).Grow(1)
@@ -145,7 +145,7 @@ func (s *Shell) toolLink(c *ui.Context, t *ui.Theme, page, icon, label string) {
 
 func (s *Shell) toolHeader(c *ui.Context, t *ui.Theme, title string) {
 	ui.Row(c).Gap(8).AlignItems(ui.Center).Children(func() {
-		if hoverFill(ui.Button(c, "‹ "+s.text("工具", "Tools")).Label(s.text("返回工具", "Back to Tools")), ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
+		if hoverFill(button(c, "‹ "+s.text("工具", "Tools")).Label(s.text("返回工具", "Back to Tools")), ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
 			s.tools.page, s.errorText = "", ""
 		}
 		ui.Text(c, title).FontSize(17).FontWeight(600)
@@ -222,12 +222,12 @@ func (s *Shell) networkQualityPage(c *ui.Context, t *ui.Theme) {
 	s.card(c, t, func() {
 		ui.Text(c, s.text("操作", "Action")).FontSize(13).FontWeight(600).TextColor(t.TextMuted)
 		if running {
-			if ui.Button(c, s.text("取消测试", "Cancel Test")).Clicked() {
+			if button(c, s.text("取消测试", "Cancel Test")).Clicked() {
 				tl.nqStream.stop()
 			}
 		} else {
 			start := s.config.Callbacks.NetworkQuality
-			if ui.Button(c, s.text("开始测试", "Start Test")).Disabled(!s.service.Running || start == nil).Clicked() {
+			if button(c, s.text("开始测试", "Start Test")).Disabled(!s.service.Running || start == nil).Clicked() {
 				req := NetworkQualityRequest{ConfigURL: tl.nqURL, Outbound: tl.nqOut, Serial: tl.nqSerial, HTTP3: tl.nqHTTP3, MaxRuntimeSeconds: tl.nqRuntime}
 				tl.nq, s.errorText = &NetworkQualityProgress{Phase: nqPhaseIdle}, ""
 				tl.nqStream.start(s.invalidator(c), func(ctx context.Context, emit func(NetworkQualityProgress)) error {
@@ -270,12 +270,12 @@ func (s *Shell) stunPage(c *ui.Context, t *ui.Theme) {
 	s.card(c, t, func() {
 		ui.Text(c, s.text("操作", "Action")).FontSize(13).FontWeight(600).TextColor(t.TextMuted)
 		if running {
-			if ui.Button(c, s.text("取消测试", "Cancel Test")).Clicked() {
+			if button(c, s.text("取消测试", "Cancel Test")).Clicked() {
 				tl.stunRun.stop()
 			}
 		} else {
 			start := s.config.Callbacks.STUNTest
-			if ui.Button(c, s.text("开始测试", "Start Test")).Disabled(!s.service.Running || start == nil).Clicked() {
+			if button(c, s.text("开始测试", "Start Test")).Disabled(!s.service.Running || start == nil).Clicked() {
 				req := STUNRequest{Server: tl.stunHost, Outbound: tl.stunOut}
 				tl.stun, s.errorText = &STUNProgress{Phase: stunPhaseBinding}, ""
 				tl.stunRun.start(s.invalidator(c), func(ctx context.Context, emit func(STUNProgress)) error {

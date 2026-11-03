@@ -85,7 +85,7 @@ func (s *Shell) nodeGrid(c *ui.Context, t *ui.Theme, g Group, width float32) {
 			if node.Selected {
 				fill, border = t.Accent.Alpha(.12), t.Accent
 			}
-			item := ui.Button(c, "").Label(node.Name).Key("node:"+node.Name).Height(54).Padding(10, 12).Justify(ui.Start).Radius(12).Background(fill).Border(1, border).Children(func() {
+			item := button(c.Key("node:"+node.Name), "").Label(node.Name).Height(54).Padding(10, 12).Justify(ui.Start).Radius(12).Background(fill).Border(1, border).Children(func() {
 				ui.Column(c).Grow(1).Gap(4).Children(func() {
 					ui.Text(c, node.Name).SingleLine().FontSize(13).FontWeight(600)
 					ui.Row(c).Gap(8).Children(func() {

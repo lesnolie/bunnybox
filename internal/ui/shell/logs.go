@@ -140,7 +140,7 @@ func (s *Shell) logPage(c *ui.Context, t *ui.Theme) {
 		if iconButton(c, pause, label).Clicked() {
 			v.setPaused(!v.paused)
 		}
-		hoverFill(ui.Button(c, "").Label(s.text("日志选项", "Log options")).Width(32).Height(32), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(func(m *ui.Menu) {
+		hoverFill(button(c, "").Label(s.text("日志选项", "Log options")).Width(32).Height(32), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(func(m *ui.Menu) {
 			m.Submenu(s.text("日志级别", "Log Level"), func(m *ui.Menu) {
 				if m.Item(s.text("默认", "Default")).Radio(v.level == 0).Chosen() {
 					v.level = 0

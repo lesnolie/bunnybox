@@ -81,7 +81,7 @@ func (s *Shell) dashboardCard(c *ui.Context, t *ui.Theme, id string) {
 					if mode == s.service.ClashMode {
 						fill = t.Surface
 					}
-					if hoverFill(ui.Button(c, mode).Grow(1).Radius(7), fill).Border(0, ui.Transparent).Disabled(s.busy || !s.service.Owned || s.config.Callbacks.SetMode == nil).Clicked() && mode != s.service.ClashMode {
+					if hoverFill(button(c, mode).Grow(1).Radius(7), fill).Border(0, ui.Transparent).Disabled(s.busy || !s.service.Owned || s.config.Callbacks.SetMode == nil).Clicked() && mode != s.service.ClashMode {
 						selected := mode
 						s.controlAction(c, func(ctx context.Context) error { return s.config.Callbacks.SetMode(ctx, selected) })
 					}
@@ -146,7 +146,7 @@ func (s *Shell) trafficCard(c *ui.Context, t *ui.Theme, title, icon, rate, total
 }
 
 func dashboardAction(c *ui.Context, t *ui.Theme, icon *ui.SVG, label string) ui.Element {
-	return ui.Button(c, "").Label(label).Width(46).Height(36).Padding(9, 13).Radius(9).Background(t.Background).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(19) })
+	return button(c, "").Label(label).Width(46).Height(36).Padding(9, 13).Radius(9).Background(t.Background).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(19) })
 }
 func (s *Shell) controlAction(c *ui.Context, action func(context.Context) error) {
 	s.run(c, func(ctx context.Context) result {

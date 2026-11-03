@@ -133,7 +133,7 @@ func (s *Shell) updateBadge(c *ui.Context, t *ui.Theme) {
 		return
 	}
 	label := s.text("有新版本 ", "Update available ") + info.Latest
-	if ui.Button(c, "").Label(label).Padding(8, 10).Radius(8).Background(t.Accent.Alpha(.12)).Border(0, ui.Transparent).Children(func() {
+	if button(c, "").Label(label).Padding(8, 10).Radius(8).Background(t.Accent.Alpha(.12)).Border(0, ui.Transparent).Children(func() {
 		ui.Row(c).Gap(7).AlignItems(ui.Center).Children(func() {
 			ui.Icon(c, icons["download"]).FontSize(14).TextColor(t.Accent)
 			ui.Text(c, label).FontSize(12).TextColor(t.Accent)
@@ -181,11 +181,11 @@ func (s *Shell) updateSettings(c *ui.Context, t *ui.Theme) {
 		ui.Row(c).Gap(8).AlignItems(ui.Center).MinHeight(34).Children(func() {
 			ui.Text(c, status).Grow(1).TextColor(t.TextMuted)
 			if info != nil && info.Available {
-				if ui.Button(c, s.text("下载并安装", "Download and Install")).Disabled(installing || checking).Clicked() {
+				if button(c, s.text("下载并安装", "Download and Install")).Disabled(installing || checking).Clicked() {
 					s.installUpdate()
 				}
 			}
-			if ui.Button(c, s.text("检查更新", "Check Now")).Disabled(installing || checking || s.config.Callbacks.CheckUpdate == nil).Clicked() {
+			if button(c, s.text("检查更新", "Check Now")).Disabled(installing || checking || s.config.Callbacks.CheckUpdate == nil).Clicked() {
 				s.CheckUpdate(false)
 			}
 		})
