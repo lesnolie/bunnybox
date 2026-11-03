@@ -13,7 +13,9 @@ import (
 // and Windows' Startup Apps settings can turn it off.
 const (
 	runKey   = `Software\Microsoft\Windows\CurrentVersion\Run`
-	runValue = "sing-box for Windows"
+	runValue = "BunnyBox"
+	// oldRunValue is the value before the rename to BunnyBox.
+	oldRunValue = "sing-box for Windows"
 )
 
 func loginCommand() (string, error) {
@@ -36,6 +38,9 @@ func startAtLogin() (bool, error) {
 	defer k.Close()
 	value, _, err := k.GetStringValue(runValue)
 	if errors.Is(err, registry.ErrNotExist) {
+		value, _, err = k.GetStringValue(oldRunValue)
+	}
+	if errors.Is(err, registry.ErrNotExist) {
 		return false, nil
 	}
 	if err != nil {
@@ -51,6 +56,7 @@ func setStartAtLogin(on bool) error {
 		return err
 	}
 	defer k.Close()
+	_ = k.DeleteValue(oldRunValue)
 	if !on {
 		if err = k.DeleteValue(runValue); errors.Is(err, registry.ErrNotExist) {
 			return nil

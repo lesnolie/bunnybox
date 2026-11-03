@@ -1,6 +1,12 @@
-# sing-box for Windows
+<p align="center"><img src="assets/icon-256.png" width="128" alt=""></p>
 
-**sing-box for Windows** 是 Windows 上的 sing-box 图形客户端，按官方 macOS 客户端的功能和布局实现。
+# BunnyBox
+
+**Unofficial Windows GUI for sing-box**
+
+BunnyBox 是 Windows 上的 sing-box 图形客户端，按官方 macOS 客户端的功能和布局实现。这是**非官方**项目，与 SagerNet 无关。
+
+> 为什么不叫 sing-box for Windows：sing-box 的许可证不允许衍生作品未经同意使用 sing-box 的名字，所以起了这个名字。
 
 后端是**未经修改的官方 sing-box 核心**（官方 Windows 服务 `sing-box-daemon`），所以代理功能、配置格式、协议、路由、DNS、TUN 都和官方一致。同一份配置在 Mac 和这里效果相同。
 
@@ -8,11 +14,11 @@
 
 ## 安装
 
-1. 在 [Releases](https://github.com/lesnolie/sing-box-for-windows/releases/latest) 下载 `sing-box-for-windows-<版本>-windows-amd64-setup.exe`。
+1. 在 [Releases](https://github.com/lesnolie/bunnybox/releases/latest) 下载 `BunnyBox-<版本>-windows-amd64-setup.exe`。
 2. 双击运行。
    - 如果出现"Windows 已保护你的电脑"，点"更多信息"→"仍要运行"。原因是安装包用的是本项目自己的签名证书，不是商业证书。
    - 管理员权限提示点"是"。
-3. 安装目录、数据目录用默认值即可，然后从开始菜单打开 **sing-box for Windows**。
+3. 安装目录、数据目录用默认值即可，然后从开始菜单打开 **BunnyBox**。
 
 **为什么必须安装，没有免安装版：** TUN、改路由需要管理员权限。所以和官方客户端一样，核心以 Windows 服务的形式在后台运行，界面程序通过它控制核心。服务必须注册到系统，官方核心还会检查安装位置和签名，单个 exe 直接运行的方式无法通过检查。
 
@@ -22,7 +28,7 @@
 
 | 位置 | 内容 |
 |---|---|
-| `C:\Program Files\sing-box for Windows` | 程序，约 116 MB（见下文） |
+| `C:\Program Files\BunnyBox` | 程序，约 116 MB（见下文） |
 | `C:\ProgramData\sing-box` | 核心的数据和配置；只有管理员和系统能修改，防止其他程序篡改 |
 
 卸载：在"设置 → 应用"中卸载，或运行安装目录下的 `uninstall.exe`。卸载会删除服务和程序文件，**数据目录默认保留**。

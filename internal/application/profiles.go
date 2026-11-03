@@ -49,7 +49,7 @@ func (b *Backend) userAgent(ctx context.Context) string {
 	if err != nil || version == "" {
 		version = "unknown"
 	}
-	return "SFW (sing-box " + version + "; language zh_CN)"
+	return "BunnyBox (sing-box " + version + "; language zh_CN)"
 }
 
 // fetch downloads a remote profile like Apple's HTTPClient.getString.

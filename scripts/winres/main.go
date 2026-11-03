@@ -38,7 +38,7 @@ var iconSizes = []int{16, 24, 32, 48, 64, 128, 256}
 func main() {
 	icon := flag.String("icon", "", "square PNG icon")
 	out := flag.String("o", "", "output .syso")
-	name := flag.String("name", "sing-box for Windows", "product name")
+	name := flag.String("name", "BunnyBox", "product name")
 	version := flag.String("version", "0.1.0", "product version")
 	exe := flag.String("exe", "sing-box.exe", "executable file name")
 	arch := flag.String("arch", "amd64", "amd64, arm64 or 386")

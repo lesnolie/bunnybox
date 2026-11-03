@@ -28,7 +28,7 @@ var (
 	trayPNG []byte
 )
 
-const appName = "sing-box for Windows"
+const appName = "BunnyBox"
 
 func main() {
 	diagnose := flag.Bool("diagnose", false, "Read-only official worker/service diagnostics as JSON")

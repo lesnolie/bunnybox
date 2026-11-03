@@ -45,7 +45,7 @@ $Numeric = [regex]::Match($ProductVersion, '^(\d+)\.(\d+)\.(\d+)')
 $Version4 = '{0}.{1}.{2}.0' -f $Numeric.Groups[1].Value, $Numeric.Groups[2].Value, $Numeric.Groups[3].Value
 $Out = Join-Path $ProjectRoot 'build/release'
 New-Item -ItemType Directory -Force $Out | Out-Null
-$Installer = Join-Path $Out "sing-box-for-windows-$ProductVersion-windows-amd64-setup.exe"
+$Installer = Join-Path $Out "BunnyBox-$ProductVersion-windows-amd64-setup.exe"
 & $MakeNSIS /V2 "/DVERSION=$ProductVersion" "/DVERSION4=$Version4" "/DSOURCE=$App" "/DOUTFILE=$Installer" (Join-Path $ProjectRoot 'installer/sing-box.nsi')
 if ($LASTEXITCODE -ne 0) { throw 'makensis failed' }
 & $Sign @($Installer)

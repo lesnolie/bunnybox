@@ -11,11 +11,10 @@
 - 当前用途：阅读导航、仪表盘密度、分组标签和节点卡片实现，参考交互结构，以 MyGo 独立实现。当前没有复制或翻译 Dart 源码，没有随应用分发 FlClash 的图标、字体、品牌或截图。
 - 后续直接复制或翻译源码时，须在对应文件保留原版权及许可声明，注明原路径、提交和本项目修改；将条目更新为实际复用清单。发布二进制时提供与产物相对应的完整源码及构建说明。
 
-## sing-box 官方图标
+## 名称与图标
 
-- 来源：third_party/sing-box-for-apple（提交见 upstream.lock）`MacLibrary/AppIcon.icon/Assets/box.png`，SagerNet 的 sing-box 官方图标，随该仓库以 GNU GPL version 3 发布。
-- 用途：按用户要求作为本应用图标。`assets/icon-256.png`、`icon-64.png`、`tray-32.png` 只做了裁去透明边、缩放；用于可执行文件图标、窗口、侧栏和托盘。
-- 商标与品牌归原作者；本项目不代表 SagerNet 官方发布。
+- BunnyBox 是 sing-box 的非官方 Windows 客户端，不代表 SagerNet 官方发布。sing-box 的名称与品牌归原作者。sing-box 的许可证不允许衍生作品未经同意使用它的名字，所以本项目不以 sing-box 命名，也不使用官方图标。
+- 应用图标 "Glossy Bunny in a Blue Box"（`assets/icon-source.png`）由本项目作者提供，随本项目以 GPL-3.0 发布。`assets/icon-256.png`、`icon-64.png`、`tray-32.png`、`installer.ico` 由它去底、缩放而成。
 
 ## MyGo 资源生成代码
 
@@ -23,7 +22,7 @@
 
 ## Windows 安装包
 
-installer/sing-box.nsi 参照官方 sing-box 桌面客户端的 NSIS 安装流程（停止服务、更换文件、`service install` 注册服务、失败回滚）重新编写，用 NSIS（zlib/libpng 许可）打包；官方实现以 GPL-3.0 发布。assets/installer.ico 由官方 sing-box 图标（见上）转换而成。
+installer/sing-box.nsi 参照官方 sing-box 桌面客户端的 NSIS 安装流程（停止服务、更换文件、`service install` 注册服务、失败回滚）重新编写，用 NSIS（zlib/libpng 许可）打包；官方实现以 GPL-3.0 发布。安装包内部的产品名（ProductName）保留为 `sing-box`、界面程序文件名保留为 `sing-box.exe`，因为官方核心只认这两个名字：前者决定能否自动更新，后者决定核心是否接受界面的连接。它们不对用户显示。
 
 ## 当前运行依赖
 

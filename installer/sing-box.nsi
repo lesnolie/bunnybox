@@ -1,4 +1,7 @@
-﻿; sing-box for Windows installer.
+﻿; BunnyBox installer: an unofficial Windows GUI for sing-box.
+;
+; The GUI keeps the file name sing-box.exe and the installer the
+; ProductName "sing-box": the official daemon accepts no other.
 ;
 ; The official daemon's InstallUpdate (third_party/sing-box,
 ; experimental/boxdd/update_windows.go) runs an update only if it is an NSIS
@@ -22,15 +25,19 @@
   !error "SOURCE is required"
 !endif
 !ifndef OUTFILE
-  !define OUTFILE "sing-box-for-windows-${VERSION}-windows-amd64-setup.exe"
+  !define OUTFILE "BunnyBox-${VERSION}-windows-amd64-setup.exe"
 !endif
 !ifndef VERSION4
   !define VERSION4 "0.0.0.0"
 !endif
 
-!define APP_NAME "sing-box for Windows"
+!define APP_NAME "BunnyBox"
+; The names before the rename to BunnyBox: an update removes their entry
+; and shortcut.
+!define OLD_NAME "sing-box for Windows"
+!define OLD_UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\sing-box-for-windows"
 !define LAYOUT_KEY "Software\SagerNet\sing-box"
-!define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\sing-box-for-windows"
+!define UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\BunnyBox"
 
 Unicode true
 ManifestDPIAware true
@@ -47,6 +54,7 @@ VIAddVersionKey /LANG=1033 "FileVersion" "${VERSION}"
 VIAddVersionKey /LANG=1033 "ProductVersion" "${VERSION}"
 VIAddVersionKey /LANG=1033 "FileDescription" "${APP_NAME} Setup"
 VIAddVersionKey /LANG=1033 "LegalCopyright" "GPL-3.0"
+VIAddVersionKey /LANG=1033 "Comments" "Unofficial Windows GUI for sing-box"
 
 !include MUI2.nsh
 !include LogicLib.nsh
@@ -219,6 +227,8 @@ Section "Install"
   WriteRegDWORD HKLM "${UNINSTALL_KEY}" "NoModify" 1
   WriteRegDWORD HKLM "${UNINSTALL_KEY}" "NoRepair" 1
   CreateShortcut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\sing-box.exe"
+  DeleteRegKey HKLM "${OLD_UNINSTALL_KEY}"
+  Delete "$SMPROGRAMS\${OLD_NAME}.lnk"
 SectionEnd
 
 Function un.onInit

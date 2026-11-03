@@ -117,7 +117,7 @@ jobs:
         run: |
           $v = '${{ steps.plan.outputs.version }}'
           $notes = "随官方 sing-box v$v 核心发布。`n`n核心更新说明：https://github.com/SagerNet/sing-box/releases/tag/v$v"
-          gh release create "v$v" (Get-ChildItem build/release/*.exe).FullName build/release/SHA256SUMS --title "sing-box for Windows $v" --notes $notes --target (git rev-parse HEAD)
+          gh release create "v$v" (Get-ChildItem build/release/*.exe).FullName build/release/SHA256SUMS --title "BunnyBox $v" --notes $notes --target (git rev-parse HEAD)
           if ($LASTEXITCODE -ne 0) { throw 'release failed' }
 
       - name: Report failure

@@ -24,7 +24,7 @@ import (
 // version; the release version is that core version. Only this repository is
 // checked: the official releases are signed by SagerNet, and the installed
 // core accepts updates only from its own signer.
-const UpdateRepository = "lesnolie/sing-box-for-windows"
+const UpdateRepository = "lesnolie/bunnybox"
 
 const (
 	updateAssetSuffix = "-windows-amd64-setup.exe"
@@ -125,7 +125,7 @@ func (b *Backend) installUpdate(ctx context.Context, info shell.UpdateInfo, prog
 	if err != nil {
 		return err
 	}
-	dir := filepath.Join(cache, "sing-box for Windows", "updates")
+	dir := filepath.Join(cache, "BunnyBox", "updates")
 	if err = os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
