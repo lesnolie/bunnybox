@@ -6,6 +6,8 @@ foreach ($Item in @(@('core','sing-box'), @('apple_client','sing-box-for-apple')
     $Expected = [regex]::Match($Section, 'commit = "([a-f0-9]{40})"').Groups[1].Value
     if (!$Expected) { throw "Missing commit for $($Item[0])" }
     $Source = Join-Path $ProjectRoot ('third_party/' + $Item[1])
+    # The Apple client is only a design reference; release builds skip it.
+    if ($Item[0] -eq 'apple_client' -and !(Test-Path (Join-Path $Source '.git'))) { Write-Output 'apple_client: not checked out'; continue }
     $Actual = & git -C $Source rev-parse HEAD
     if ($LASTEXITCODE -ne 0 -or $Actual -ne $Expected) { throw "Commit mismatch: $Source" }
     $Dirty = & git -C $Source status --porcelain --untracked-files=all
