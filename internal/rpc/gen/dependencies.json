@@ -6,7 +6,7 @@
     "protoc-gen-go-grpc 1.6.1"
   ],
   "wellKnownVersion": "protobuf v3.20.3",
-  "manifestSHA256": "b753e7d5e4990f9a8fca0f2b12ed5c19b175cf050b14c5a0a1c855b6899af557",
+  "manifestSHA256": "8a9f6231027ce8190057cc7bc2d730ba2a9893babe023b02190adf25682a2eb5",
   "entries": [
     "daemon/managed_service.proto",
     "daemon/started_service.proto",
@@ -16,7 +16,7 @@
     {
       "path": "daemon/managed_service.proto",
       "origin": "third_party/sing-box",
-      "sha256": "1f78f1ff10f3cdc88516699afdcd5fc01524f583e4df448b4e1289ebf83be524",
+      "sha256": "22230be761d8325a350f7aa0b8f1fdb3e00565041f44f9f2cce317a56ee7f883",
       "imports": [
         "google/protobuf/empty.proto"
       ]
@@ -24,7 +24,7 @@
     {
       "path": "daemon/started_service.proto",
       "origin": "third_party/sing-box",
-      "sha256": "c847e92b5b20deecadbc24a6f683096a3f4bf809b64cc8dc33efb093ac054cc7",
+      "sha256": "4feeac3166f38074888d9a5e04e69c5f92a178d2a2c3e94a963d2999ef4a3994",
       "imports": [
         "google/protobuf/empty.proto"
       ]
@@ -32,7 +32,7 @@
     {
       "path": "experimental/boxdd/desktop_service.proto",
       "origin": "third_party/sing-box",
-      "sha256": "597e9884c70ee4b9ba5ef10fc0acd05c0f72ca9eae0f5d5af77506dd783e1b76",
+      "sha256": "fa5880c6f2ee906cbedeb6e5b4dcf38efc1f279c36786065c97a5206600c4ed1",
       "imports": [
         "daemon/started_service.proto",
         "google/protobuf/empty.proto"

@@ -89,7 +89,12 @@ func baseline(m manifest) (string, error) {
 	return commit, nil
 }
 
-func digest(b []byte) string { s := sha256.Sum256(b); return hex.EncodeToString(s[:]) }
+// digest hashes a source file as Git stores it: a checkout with CRLF line
+// endings gives the same digest as one with LF.
+func digest(b []byte) string {
+	s := sha256.Sum256(bytes.ReplaceAll(b, []byte("\r\n"), []byte("\n")))
+	return hex.EncodeToString(s[:])
+}
 func run(name string, args ...string) ([]byte, error) {
 	c := exec.Command(name, args...)
 	var stderr bytes.Buffer
