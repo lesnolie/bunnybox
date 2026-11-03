@@ -168,6 +168,7 @@ func main() {
 		hidden := *atLogin && settings.ShowTray && settings.TrayBackground
 		window = mygo.NewWindow(mygo.WindowOptions{Title: appName, Width: 1000, Height: 760, MinWidth: 860, MinHeight: 620, Hidden: hidden, TitleBarStyle: mygo.TitleBarHidden, Vibrancy: mygo.VibrancySidebar, Content: view.View()})
 		_ = window.SetIcon(iconPNG)
+		roundCorners(window.NativeHandle())
 		// Quit (the tray's, an update's) closes the window for good; only the
 		// window's own close button hides it to the tray.
 		quitting := false
