@@ -59,7 +59,13 @@ jobs:
           Expand-Archive $zip (Join-Path $env:RUNNER_TEMP protoc)
           $env:PATH = "$(Join-Path $env:RUNNER_TEMP 'protoc/bin');$env:PATH"
           ./scripts/proto/install-tools.ps1
-          ./scripts/proto/generate.ps1 -Mode check
+          try { ./scripts/proto/generate.ps1 -Mode check } catch {
+            # Show what changed, for the failure report.
+            ./scripts/proto/generate.ps1
+            git --no-pager diff --stat
+            git --no-pager diff -- internal/rpc/gen/dependencies.json
+            throw
+          }
 
       - name: Package
         if: steps.plan.outputs.build == 'true'
