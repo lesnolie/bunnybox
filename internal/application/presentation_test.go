@@ -1,6 +1,9 @@
 package application
 
-import "testing"
+import (
+	"net/url"
+	"testing"
+)
 
 func TestFirstFrameDoesNotInventRate(t *testing.T) {
 	m := uiMetrics(MetricsSnapshot{MemoryBytes: 1024, Goroutines: 4, TrafficAvailable: true, UplinkTotal: 1234, DownlinkTotal: 5678})
@@ -37,6 +40,29 @@ func TestNewerVersion(t *testing.T) {
 	} {
 		if got := newerVersion(c.a, c.b); got != c.want {
 			t.Errorf("newerVersion(%q, %q) = %v", c.a, c.b, got)
+		}
+	}
+}
+
+func TestManualProxy(t *testing.T) {
+	target := func(s string) *url.URL { u, _ := url.Parse(s); return u }
+	cases := []struct{ target, server, bypass, want string }{
+		{"https://sub.example.com/x", "127.0.0.1:7890", "", "http://127.0.0.1:7890"},
+		{"https://sub.example.com/x", "http=127.0.0.1:1;https=127.0.0.1:2", "", "http://127.0.0.1:2"},
+		{"http://sub.example.com/x", "http=127.0.0.1:1;https=127.0.0.1:2", "", "http://127.0.0.1:1"},
+		{"https://sub.example.com/x", "socks=127.0.0.1:1080", "", "socks5://127.0.0.1:1080"},
+		{"https://sub.example.com/x", "127.0.0.1:7890", "*.example.com;localhost", ""},
+		{"http://router/x", "127.0.0.1:7890", "<local>", ""},
+		{"https://sub.example.com/x", "", "", ""},
+	}
+	for _, c := range cases {
+		proxy, ok := manualProxy(target(c.target), c.server, c.bypass)
+		got := ""
+		if ok {
+			got = proxy.String()
+		}
+		if got != c.want {
+			t.Errorf("manualProxy(%s, %q, %q) = %q, want %q", c.target, c.server, c.bypass, got, c.want)
 		}
 	}
 }

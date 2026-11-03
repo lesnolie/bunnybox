@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 	desktop "singboxwin.local/client/internal/rpc/gen/desktop"
@@ -45,8 +44,6 @@ type githubRelease struct {
 		Digest string `json:"digest"`
 	} `json:"assets"`
 }
-
-var updateHTTP = &http.Client{Timeout: 30 * time.Second}
 
 // coreVersion is the running core's version, which is the installed
 // product's version.
@@ -188,8 +185,7 @@ func download(ctx context.Context, info shell.UpdateInfo, path string, progress 
 	if err != nil {
 		return err
 	}
-	client := &http.Client{} // the download may take longer than the API timeout
-	response, err := client.Do(request)
+	response, err := downloadHTTP.Do(request) // no API timeout: the download may take longer
 	if err != nil {
 		return err
 	}

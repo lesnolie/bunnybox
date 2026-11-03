@@ -65,7 +65,7 @@ func (b *Backend) fetch(ctx context.Context, address string) (string, error) {
 		return "", err
 	}
 	request.Header.Set("User-Agent", b.userAgent(ctx))
-	response, err := http.DefaultClient.Do(request)
+	response, err := downloadHTTP.Do(request)
 	if err != nil {
 		return "", fmt.Errorf("下载订阅失败 / fetch: %w", err)
 	}
