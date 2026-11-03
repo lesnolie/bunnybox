@@ -81,7 +81,7 @@ func (s *Shell) dashboardCard(c *ui.Context, t *ui.Theme, id string) {
 					if mode == s.service.ClashMode {
 						fill = t.Surface
 					}
-					if ui.Button(c, mode).Grow(1).Radius(7).Background(fill).Border(0, ui.Transparent).Disabled(s.busy || !s.service.Owned || s.config.Callbacks.SetMode == nil).Clicked() && mode != s.service.ClashMode {
+					if hoverFill(ui.Button(c, mode).Grow(1).Radius(7), fill).Border(0, ui.Transparent).Disabled(s.busy || !s.service.Owned || s.config.Callbacks.SetMode == nil).Clicked() && mode != s.service.ClashMode {
 						selected := mode
 						s.controlAction(c, func(ctx context.Context) error { return s.config.Callbacks.SetMode(ctx, selected) })
 					}

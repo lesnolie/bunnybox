@@ -39,5 +39,20 @@ var icons = map[string]*ui.SVG{
 }
 
 func iconButton(c *ui.Context, icon *ui.SVG, label string) ui.Element {
-	return ui.Button(c, "").Label(label).Width(32).Height(32).Padding(7).Radius(7).Border(0, ui.Transparent).Background(ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(18) })
+	return hoverFill(ui.Button(c, "").Label(label).Width(32).Height(32).Padding(7).Radius(7).Border(0, ui.Transparent), ui.Transparent).Children(func() { ui.Icon(c, icon).FontSize(18) })
+}
+
+// hoverFill gives a button drawn on fill the feedback its own style would:
+// a light tint while the pointer is over it and a deeper one while pressed.
+// A colored fill, as a selected item's, stays as it is.
+func hoverFill(e ui.Element, fill ui.Color) ui.Element {
+	if fill == ui.Transparent {
+		switch {
+		case e.Pressed():
+			fill = ui.Hex("#808080").Alpha(.24)
+		case e.Hovered():
+			fill = ui.Hex("#808080").Alpha(.14)
+		}
+	}
+	return e.Background(fill)
 }

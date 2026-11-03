@@ -86,7 +86,7 @@ func (s *Shell) settings(c *ui.Context, t *ui.Theme) {
 }
 
 func (s *Shell) settingsLink(c *ui.Context, t *ui.Theme, page, icon, label string) {
-	if ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() {
+	if hoverFill(ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start), ui.Transparent).Border(0, ui.Transparent).Children(func() {
 		ui.Row(c).Grow(1).Gap(10).AlignItems(ui.Center).Children(func() {
 			ui.Icon(c, icons[icon]).FontSize(18).TextColor(t.Accent)
 			ui.Text(c, label).FontSize(14).Grow(1)
@@ -105,7 +105,7 @@ func (s *Shell) settingsLink(c *ui.Context, t *ui.Theme, page, icon, label strin
 
 func (s *Shell) externalLink(c *ui.Context, t *ui.Theme, icon, label, url string) {
 	open := s.config.Callbacks.OpenURL
-	if ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start).Background(ui.Transparent).Border(0, ui.Transparent).Disabled(open == nil).Children(func() {
+	if hoverFill(ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start), ui.Transparent).Border(0, ui.Transparent).Disabled(open == nil).Children(func() {
 		ui.Row(c).Grow(1).Gap(10).AlignItems(ui.Center).Children(func() {
 			ui.Icon(c, icons[icon]).FontSize(18).TextColor(t.Accent)
 			ui.Text(c, label).FontSize(14).Grow(1)
@@ -121,7 +121,7 @@ func (s *Shell) externalLink(c *ui.Context, t *ui.Theme, icon, label, url string
 // settingsHeader is the back button of a settings page.
 func (s *Shell) settingsHeader(c *ui.Context, t *ui.Theme, title string) {
 	ui.Row(c).Gap(8).AlignItems(ui.Center).Children(func() {
-		if ui.Button(c, "‹ "+s.text("设置", "Settings")).Label(s.text("返回设置", "Back to Settings")).Background(ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
+		if hoverFill(ui.Button(c, "‹ "+s.text("设置", "Settings")).Label(s.text("返回设置", "Back to Settings")), ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
 			s.settingsPage, s.errorText = "", ""
 		}
 		ui.Text(c, title).FontSize(17).FontWeight(600)

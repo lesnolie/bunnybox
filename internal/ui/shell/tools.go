@@ -131,7 +131,7 @@ func (s *Shell) toolsPage(c *ui.Context, t *ui.Theme) {
 }
 
 func (s *Shell) toolLink(c *ui.Context, t *ui.Theme, page, icon, label string) {
-	if ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() {
+	if hoverFill(ui.Button(c, "").Label(label).Height(40).Padding(8, 6).Justify(ui.Start), ui.Transparent).Border(0, ui.Transparent).Children(func() {
 		ui.Row(c).Grow(1).Gap(10).AlignItems(ui.Center).Children(func() {
 			ui.Icon(c, icons[icon]).FontSize(18).TextColor(t.Accent)
 			ui.Text(c, label).FontSize(14).Grow(1)
@@ -145,7 +145,7 @@ func (s *Shell) toolLink(c *ui.Context, t *ui.Theme, page, icon, label string) {
 
 func (s *Shell) toolHeader(c *ui.Context, t *ui.Theme, title string) {
 	ui.Row(c).Gap(8).AlignItems(ui.Center).Children(func() {
-		if ui.Button(c, "‹ "+s.text("工具", "Tools")).Label(s.text("返回工具", "Back to Tools")).Background(ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
+		if hoverFill(ui.Button(c, "‹ "+s.text("工具", "Tools")).Label(s.text("返回工具", "Back to Tools")), ui.Transparent).Border(0, ui.Transparent).TextColor(t.Accent).Clicked() {
 			s.tools.page, s.errorText = "", ""
 		}
 		ui.Text(c, title).FontSize(17).FontWeight(600)

@@ -216,7 +216,7 @@ func (s *Shell) connectionsPage(c *ui.Context, t *ui.Theme) {
 				v.query = ""
 			}
 		}
-		ui.Button(c, "").Label(s.text("连接选项", "Connection options")).Width(32).Height(32).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(func(m *ui.Menu) {
+		hoverFill(ui.Button(c, "").Label(s.text("连接选项", "Connection options")).Width(32).Height(32), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(func(m *ui.Menu) {
 			m.Submenu(s.text("状态", "State"), func(m *ui.Menu) {
 				for i, name := range []string{s.text("全部", "All"), s.text("活动", "Active"), s.text("已关闭", "Closed")} {
 					if m.Item(name).Radio(v.state == i).Chosen() {
@@ -315,7 +315,7 @@ func (s *Shell) connectionRow(c *ui.Context, t *ui.Theme, conn Connection) {
 // connectionDetails follows Apple's ConnectionDetailsView.
 func (s *Shell) connectionDetails(c *ui.Context, t *ui.Theme, conn Connection) {
 	ui.Row(c).Gap(8).AlignItems(ui.Center).Children(func() {
-		if ui.Button(c, s.text("‹ 连接", "‹ Connections")).Label(s.text("返回连接列表", "Back to connections")).Border(0, ui.Transparent).Background(ui.Transparent).Clicked() {
+		if hoverFill(ui.Button(c, s.text("‹ 连接", "‹ Connections")).Label(s.text("返回连接列表", "Back to connections")).Border(0, ui.Transparent), ui.Transparent).Clicked() {
 			s.conns.detailOpen, s.conns.detail = false, nil
 		}
 		ui.Text(c, s.text("连接", "Connection")).FontSize(17).FontWeight(600)

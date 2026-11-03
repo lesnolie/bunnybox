@@ -302,7 +302,7 @@ func (s *Shell) toolbar(c *ui.Context, t *ui.Theme) {
 		if iconButton(c, icons["refresh"], s.text("检测服务", "Check service")).Disabled(s.busy).Clicked() {
 			s.refreshService(c)
 		}
-		ui.Button(c, "").Label(s.text("其他", "More")).Width(30).Height(30).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(s.menu)
+		hoverFill(ui.Button(c, "").Label(s.text("其他", "More")).Width(30).Height(30), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(s.menu)
 	})
 }
 
@@ -336,7 +336,7 @@ func (s *Shell) navigation(c *ui.Context, t *ui.Theme) {
 				fill = t.Accent
 				color = ui.Hex("#FFFFFF")
 			}
-			if ui.Button(c, "").Label(label).Height(42).Padding(9, 12).Gap(12).Justify(ui.Start).Radius(8).Border(0, ui.Transparent).Background(fill).TextColor(color).Children(func() { ui.Icon(c, icons[item.id]).FontSize(21); ui.Text(c, label).FontSize(16).FontWeight(500) }).Clicked() {
+			if hoverFill(ui.Button(c, "").Label(label).Height(42).Padding(9, 12).Gap(12).Justify(ui.Start).Radius(8).Border(0, ui.Transparent), fill).TextColor(color).Children(func() { ui.Icon(c, icons[item.id]).FontSize(21); ui.Text(c, label).FontSize(16).FontWeight(500) }).Clicked() {
 				s.page, s.settingsPage, s.tools.page = item.id, "", ""
 			}
 		}

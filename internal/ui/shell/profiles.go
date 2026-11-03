@@ -176,7 +176,7 @@ func (s *Shell) profileSection(c *ui.Context, t *ui.Theme) {
 		}
 		for _, p := range s.profiles {
 			ui.Row(c).Key(p.ID).Gap(10).AlignItems(ui.Center).Padding(6).Children(func() {
-				if ui.Button(c, "").Label(p.Name).Grow(1).Height(44).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() {
+				if hoverFill(ui.Button(c, "").Label(p.Name).Grow(1).Height(44), ui.Transparent).Border(0, ui.Transparent).Children(func() {
 					ui.Column(c).Grow(1).Gap(2).Children(func() {
 						ui.Text(c, p.Name).FontSize(14)
 						info := s.profileType(p)
@@ -193,7 +193,7 @@ func (s *Shell) profileSection(c *ui.Context, t *ui.Theme) {
 				}).Disabled(s.busy).Clicked() && !p.Selected {
 					s.selectProfile(c, p.ID)
 				}
-				ui.Button(c, "").Label(s.text("配置操作 ", "Profile actions ")+p.Name).Height(28).Width(28).Background(ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(16) }).PopoverMenuButton(func(m *ui.Menu) { s.profileMenu(c, m, p) })
+				hoverFill(ui.Button(c, "").Label(s.text("配置操作 ", "Profile actions ")+p.Name).Height(28).Width(28), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(16) }).PopoverMenuButton(func(m *ui.Menu) { s.profileMenu(c, m, p) })
 			})
 		}
 	})
