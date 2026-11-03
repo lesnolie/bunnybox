@@ -26,8 +26,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: true
           fetch-depth: 0
+
+      # The build needs the core and MyGo; the Apple client is a design
+      # reference whose paths are too long for a Windows checkout.
+      - name: Submodules
+        run: git submodule update --init third_party/sing-box third_party/mygo
 
       - uses: actions/setup-go@v5
         with:
