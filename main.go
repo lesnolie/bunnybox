@@ -166,7 +166,7 @@ func main() {
 		// Apple's Start At Login with the menu bar kept in background leaves
 		// the window closed.
 		hidden := *atLogin && settings.ShowTray && settings.TrayBackground
-		window = mygo.NewWindow(mygo.WindowOptions{Title: appName, Width: 1000, Height: 760, MinWidth: 860, MinHeight: 620, Hidden: hidden, TitleBarStyle: mygo.TitleBarHidden, Vibrancy: mygo.VibrancySidebar, Content: view.View()})
+		window = mygo.NewWindow(mygo.WindowOptions{Title: appName, Width: 1000, Height: 760, MinWidth: 860, MinHeight: 620, Hidden: hidden, TitleBarStyle: mygo.TitleBarHidden, TitleBarHeight: toolbarHeight, Vibrancy: mygo.VibrancySidebar, Content: view.View()})
 		_ = window.SetIcon(iconPNG)
 		roundCorners(window.NativeHandle())
 		// Quit (the tray's, an update's) closes the window for good; only the
@@ -191,3 +191,7 @@ func main() {
 		log.Fatal(err)
 	}
 }
+
+// toolbarHeight is the shell toolbar's height. The window's own buttons
+// take it too, so the toolbar's line up with them.
+const toolbarHeight = 62
