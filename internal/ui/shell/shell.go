@@ -303,7 +303,7 @@ func (s *Shell) toolbar(c *ui.Context, t *ui.Theme) {
 		if iconButton(c, icons["refresh"], s.text("检测服务", "Check service")).Disabled(s.busy).Clicked() {
 			s.refreshService(c)
 		}
-		more := hoverFill(button(c, "").Label(s.text("其他", "More")).Width(30).Height(30), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) })
+		more := iconButton(c, icons["more"], s.text("其他", "More"))
 		if more.Clicked() {
 			s.moreOpen = !s.moreOpen
 		}
