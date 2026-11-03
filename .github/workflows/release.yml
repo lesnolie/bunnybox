@@ -58,6 +58,8 @@ jobs:
           Invoke-WebRequest https://github.com/protocolbuffers/protobuf/releases/download/v3.20.3/protoc-3.20.3-win64.zip -OutFile $zip
           Expand-Archive $zip (Join-Path $env:RUNNER_TEMP protoc)
           $env:PATH = "$(Join-Path $env:RUNNER_TEMP 'protoc/bin');$env:PATH"
+          # The protocol tool's tests in the Test step use protoc too.
+          Join-Path $env:RUNNER_TEMP 'protoc/bin' | Out-File -Append -Encoding utf8 $env:GITHUB_PATH
           ./scripts/proto/install-tools.ps1
           try { ./scripts/proto/generate.ps1 -Mode check } catch {
             # Show what changed, for the failure report.
