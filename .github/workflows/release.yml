@@ -24,6 +24,11 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
+      # Check out files as they are, as on the development machine: the
+      # protocol check compares generated code byte for byte.
+      - name: Line endings
+        run: git config --global core.autocrlf false
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
