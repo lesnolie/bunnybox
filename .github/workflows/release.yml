@@ -1,0 +1,110 @@
+# Builds a release whenever the official sing-box core has a new stable
+# version: the core is rebuilt from that tag, signed with this project's
+# certificate (the installed core accepts updates only from its own signer)
+# and published as an installer the application offers to install.
+name: Release
+
+on:
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: false
+
+      - name: Plan
+        id: plan
+        shell: pwsh
+        run: ./scripts/release/plan.ps1
+
+      - name: Protocol compatibility
+        if: steps.plan.outputs.build == 'true'
+        shell: pwsh
+        run: |
+          # The application speaks the core's gRPC protocol through generated
+          # code; a core that changed it needs a new application, not a rebuild.
+          $zip = Join-Path $env:RUNNER_TEMP protoc.zip
+          Invoke-WebRequest https://github.com/protocolbuffers/protobuf/releases/download/v3.20.3/protoc-3.20.3-win64.zip -OutFile $zip
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP protoc)
+          $env:PATH = "$(Join-Path $env:RUNNER_TEMP 'protoc/bin');$env:PATH"
+          ./scripts/proto/install-tools.ps1
+          ./scripts/proto/generate.ps1 -Mode check
+
+      - name: Package
+        if: steps.plan.outputs.build == 'true'
+        shell: pwsh
+        env:
+          CODESIGN_PFX_BASE64: ${{ secrets.CODESIGN_PFX_BASE64 }}
+          CODESIGN_CER_BASE64: ${{ secrets.CODESIGN_CER_BASE64 }}
+          CODESIGN_PFX_PASSWORD: ${{ secrets.CODESIGN_PFX_PASSWORD }}
+        run: |
+          if (!$env:CODESIGN_PFX_BASE64 -or !$env:CODESIGN_CER_BASE64 -or !$env:CODESIGN_PFX_PASSWORD) { throw 'Signing secrets are missing' }
+          $pfx = Join-Path $env:RUNNER_TEMP codesign.pfx
+          $cer = Join-Path $env:RUNNER_TEMP codesign.cer
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:CODESIGN_PFX_BASE64))
+          [IO.File]::WriteAllBytes($cer, [Convert]::FromBase64String($env:CODESIGN_CER_BASE64))
+          try {
+            ./scripts/package.ps1 -Pfx $pfx -Certificate $cer
+          } finally {
+            Remove-Item $pfx -Force -ErrorAction SilentlyContinue
+          }
+
+      - name: Test
+        if: steps.plan.outputs.build == 'true'
+        shell: pwsh
+        run: |
+          . ./scripts/env.ps1
+          $env:MYGO_SQLITE_LIBRARY = (Resolve-Path build/app/mygo-sqlite3.dll).Path
+          go test -count=1 ./...
+          if ($LASTEXITCODE -ne 0) { throw 'tests failed' }
+
+      - name: Lock the new core
+        if: steps.plan.outputs.build == 'true' && steps.plan.outputs.bumped == 'true'
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add upstream.lock third_party/sing-box
+          git commit -m "Lock sing-box v${{ steps.plan.outputs.version }}"
+          git push
+
+      - name: Publish
+        if: steps.plan.outputs.build == 'true'
+        shell: pwsh
+        run: |
+          $v = '${{ steps.plan.outputs.version }}'
+          $notes = "随官方 sing-box v$v 核心发布。`n`n核心更新说明：https://github.com/SagerNet/sing-box/releases/tag/v$v"
+          gh release create "v$v" (Get-ChildItem build/release/*.exe).FullName build/release/SHA256SUMS --title "sing-box for Windows $v" --notes $notes --target (git rev-parse HEAD)
+          if ($LASTEXITCODE -ne 0) { throw 'release failed' }
+
+      - name: Report failure
+        if: failure()
+        shell: pwsh
+        run: |
+          $title = "自动发布失败：sing-box v${{ steps.plan.outputs.version }}"
+          $existing = gh issue list --state open --search "in:title $title" --json number --jq length
+          if ($existing -eq '0') {
+            gh issue create --title $title --body "运行记录：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`n`n若失败在 Protocol compatibility，说明新核心改了通信协议，需要更新应用后再发布。"
+          }

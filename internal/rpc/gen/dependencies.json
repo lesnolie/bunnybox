@@ -1,0 +1,78 @@
+{
+  "sourceCommit": "c005f35300ce76427dc285481ec5695f5b179cd2",
+  "tools": [
+    "libprotoc 3.20.3",
+    "protoc-gen-go v1.36.11",
+    "protoc-gen-go-grpc 1.6.1"
+  ],
+  "wellKnownVersion": "protobuf v3.20.3",
+  "manifestSHA256": "b753e7d5e4990f9a8fca0f2b12ed5c19b175cf050b14c5a0a1c855b6899af557",
+  "entries": [
+    "daemon/managed_service.proto",
+    "daemon/started_service.proto",
+    "experimental/boxdd/desktop_service.proto"
+  ],
+  "dependencies": [
+    {
+      "path": "daemon/managed_service.proto",
+      "origin": "third_party/sing-box",
+      "sha256": "1f78f1ff10f3cdc88516699afdcd5fc01524f583e4df448b4e1289ebf83be524",
+      "imports": [
+        "google/protobuf/empty.proto"
+      ]
+    },
+    {
+      "path": "daemon/started_service.proto",
+      "origin": "third_party/sing-box",
+      "sha256": "c847e92b5b20deecadbc24a6f683096a3f4bf809b64cc8dc33efb093ac054cc7",
+      "imports": [
+        "google/protobuf/empty.proto"
+      ]
+    },
+    {
+      "path": "experimental/boxdd/desktop_service.proto",
+      "origin": "third_party/sing-box",
+      "sha256": "597e9884c70ee4b9ba5ef10fc0acd05c0f72ca9eae0f5d5af77506dd783e1b76",
+      "imports": [
+        "daemon/started_service.proto",
+        "google/protobuf/empty.proto"
+      ]
+    },
+    {
+      "path": "google/protobuf/empty.proto",
+      "origin": "scripts/proto/include",
+      "sha256": "23b75ded84bd2ee81f0098850ffaa0d5e1a6d881a9e1a760f730989e90534ec3",
+      "imports": []
+    }
+  ],
+  "commands": [
+    [
+      "protoc",
+      "-Ithird_party/sing-box",
+      "-Iscripts/proto/include",
+      "--include_imports",
+      "--descriptor_set_out=\u003coutput\u003e/protocol.pb",
+      "daemon/managed_service.proto",
+      "daemon/started_service.proto",
+      "experimental/boxdd/desktop_service.proto"
+    ],
+    [
+      "protoc",
+      "-Ithird_party/sing-box",
+      "-Iscripts/proto/include",
+      "--go_out=\u003coutput\u003e",
+      "--go_opt=module=singboxwin.local/client",
+      "--go-grpc_out=\u003coutput\u003e",
+      "--go-grpc_opt=module=singboxwin.local/client",
+      "--go_opt=Mdaemon/managed_service.proto=singboxwin.local/client/internal/rpc/gen/daemon;daemon",
+      "--go-grpc_opt=Mdaemon/managed_service.proto=singboxwin.local/client/internal/rpc/gen/daemon;daemon",
+      "--go_opt=Mdaemon/started_service.proto=singboxwin.local/client/internal/rpc/gen/daemon;daemon",
+      "--go-grpc_opt=Mdaemon/started_service.proto=singboxwin.local/client/internal/rpc/gen/daemon;daemon",
+      "--go_opt=Mexperimental/boxdd/desktop_service.proto=singboxwin.local/client/internal/rpc/gen/desktop;desktop",
+      "--go-grpc_opt=Mexperimental/boxdd/desktop_service.proto=singboxwin.local/client/internal/rpc/gen/desktop;desktop",
+      "daemon/managed_service.proto",
+      "daemon/started_service.proto",
+      "experimental/boxdd/desktop_service.proto"
+    ]
+  ]
+}

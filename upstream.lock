@@ -1,0 +1,14 @@
+[apple_client]
+commit = "2dd154e7586188d5fff8de615e8c821ed25ec089"
+version = "1.14.4"
+
+[core]
+tag = "v1.14.4"
+commit = "c005f35300ce76427dc285481ec5695f5b179cd2"
+
+[desktop_reference]
+commit = "8aab8eab022366e1032e952d499c9252b833e6c3"
+
+[mygo]
+commit = "1f039303abe1bf8b8f6a94ae15c4d6c5ff5d739f"
+go = "1.27.3"

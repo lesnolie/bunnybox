@@ -1,0 +1,7 @@
+/build/
+/.cache/
+*.pfx
+*.key
+*.exe
+*.test
+*.syso

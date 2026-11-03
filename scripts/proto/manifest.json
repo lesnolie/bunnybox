@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "sourceRoot": "third_party/sing-box",
+  "entries": ["daemon/*.proto", "experimental/boxdd/desktop_service.proto"],
+  "includeRoot": "scripts/proto/include",
+  "wellKnownVersion": "protobuf v3.20.3",
+  "output": "internal/rpc/gen",
+  "module": "singboxwin.local/client",
+  "protoc": "libprotoc 3.20.3",
+  "protocGenGo": "protoc-gen-go v1.36.11",
+  "protocGenGoGrpc": "protoc-gen-go-grpc 1.6.1",
+  "mappings": {
+    "daemon/*": "singboxwin.local/client/internal/rpc/gen/daemon;daemon",
+    "experimental/boxdd/*": "singboxwin.local/client/internal/rpc/gen/desktop;desktop"
+  }
+}
+
+

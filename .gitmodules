@@ -1,0 +1,9 @@
+[submodule "third_party/mygo"]
+	path = third_party/mygo
+	url = https://github.com/egoist/mygo.git
+[submodule "third_party/sing-box"]
+	path = third_party/sing-box
+	url = https://github.com/SagerNet/sing-box.git
+[submodule "third_party/sing-box-for-apple"]
+	path = third_party/sing-box-for-apple
+	url = https://github.com/SagerNet/sing-box-for-apple.git
