@@ -67,6 +67,10 @@ jobs:
             throw
           }
 
+      - name: NSIS
+        if: steps.plan.outputs.build == 'true'
+        run: choco install nsis --no-progress -y
+
       - name: Package
         if: steps.plan.outputs.build == 'true'
         shell: pwsh
