@@ -13,8 +13,14 @@ $Parent = Split-Path $OutputPath -Parent
 New-Item -ItemType Directory -Path $Parent -Force | Out-Null
 $Arguments = @('--diagnose')
 if ($SmokeCore) { $Arguments = @('--smoke-core') }
-$Raw = & $Executable @Arguments
-$ProbeExit = $LASTEXITCODE
+# The application is a GUI program: PowerShell does not wait for it or keep
+# its output unless it runs through Start-Process.
+$OutFile = [IO.Path]::GetTempFileName()
+try {
+    $Probe = Start-Process -FilePath $Executable -ArgumentList $Arguments -NoNewWindow -Wait -PassThru -RedirectStandardOutput $OutFile
+    $ProbeExit = $Probe.ExitCode
+    $Raw = Get-Content -LiteralPath $OutFile
+} finally { Remove-Item -LiteralPath $OutFile -ErrorAction SilentlyContinue }
 try { $Result = ($Raw -join "`n") | ConvertFrom-Json } catch { throw "Diagnostic did not return valid JSON (exit $ProbeExit)" }
 $Daemon = Join-Path (Split-Path $Executable -Parent) 'resources/daemon/sing-box-daemon.exe'
 $Record = [ordered]@{
