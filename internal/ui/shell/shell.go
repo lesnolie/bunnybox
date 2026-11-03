@@ -165,6 +165,7 @@ type Shell struct {
 	tools                          toolsState
 	cards                          cardConfig
 	cardsOpen                      bool
+	moreOpen                       bool
 	showTray, trayBackground       bool
 	serviceChanged                 atomic.Bool
 	logo                           ui.ImageSource
@@ -302,7 +303,49 @@ func (s *Shell) toolbar(c *ui.Context, t *ui.Theme) {
 		if iconButton(c, icons["refresh"], s.text("检测服务", "Check service")).Disabled(s.busy).Clicked() {
 			s.refreshService(c)
 		}
-		hoverFill(button(c, "").Label(s.text("其他", "More")).Width(30).Height(30), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) }).PopoverMenuButton(s.menu)
+		more := hoverFill(button(c, "").Label(s.text("其他", "More")).Width(30).Height(30), ui.Transparent).Border(0, ui.Transparent).Children(func() { ui.Icon(c, icons["more"]).FontSize(18) })
+		if more.Clicked() {
+			s.moreOpen = !s.moreOpen
+		}
+		s.moreMenu(c, t, more)
+	})
+}
+
+// moreMenu is the toolbar's More menu. It hangs from the button's right
+// edge, as Windows 11's More menus do, and not over the window buttons.
+func (s *Shell) moreMenu(c *ui.Context, t *ui.Theme, anchor ui.Element) {
+	ui.PopoverBase(c, anchor, &s.moreOpen, func(panel ui.Element) {
+		panel.AttachTo(anchor, ui.AnchorBottomEnd, ui.AnchorTopEnd).Margin(t.Space(1), 0, 0, 0).
+			MinWidth(t.Space(45)).Padding(t.Space(1)).Radius(t.Radius+2).Background(t.Background).Border(1, t.Border).
+			Shadow(0, 6, 20, 0, ui.RGBA(0, 0, 0, 0.18))
+		item := func(label string, checked bool) bool {
+			row := hoverFill(button(c.Key("more:"+label), "").Label(label).Height(32).Padding(0, 12, 0, 8).Gap(6).Justify(ui.Start).Radius(t.Radius).Border(0, ui.Transparent), ui.Transparent)
+			row.Children(func() {
+				mark := ""
+				if checked {
+					mark = "✓"
+				}
+				ui.Text(c, mark).Width(16)
+				ui.Text(c, label)
+			})
+			if row.Clicked() {
+				s.moreOpen = false
+				return true
+			}
+			return false
+		}
+		if item(s.text("概览", "Overview"), s.page == "dashboard") {
+			s.page = "dashboard"
+		}
+		if item(s.text("设置", "Settings"), s.page == "settings") {
+			s.page, s.settingsPage = "settings", ""
+		}
+		if item(s.text("管理配置", "Manage profiles"), s.page == "profiles") {
+			s.page = "profiles"
+		}
+		if item(s.text("仪表盘项目", "Dashboard Items"), false) {
+			s.cardsOpen = true
+		}
 	})
 }
 
@@ -435,20 +478,6 @@ func (s *Shell) appearanceLabel() string {
 		return s.text("深色", "Dark")
 	default:
 		return s.text("跟随系统", "System")
-	}
-}
-func (s *Shell) menu(m *ui.Menu) {
-	if m.Item(s.text("概览", "Overview")).Checked(s.page == "dashboard").Chosen() {
-		s.page = "dashboard"
-	}
-	if m.Item(s.text("设置", "Settings")).Checked(s.page == "settings").Chosen() {
-		s.page, s.settingsPage = "settings", ""
-	}
-	if m.Item(s.text("管理配置", "Manage profiles")).Checked(s.page == "profiles").Chosen() {
-		s.page = "profiles"
-	}
-	if m.Item(s.text("仪表盘项目", "Dashboard Items")).Chosen() {
-		s.cardsOpen = true
 	}
 }
 
